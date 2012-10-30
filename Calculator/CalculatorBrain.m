@@ -33,7 +33,7 @@
 
 + (BOOL)isTwoOperandOperation:(id)stackItem
 {
-    NSSet *twoOperandOperations = [NSSet setWithObjects:@"+", @"*", @"-", @"/", nil];
+    NSSet *twoOperandOperations = [NSSet setWithObjects:@"+", @"x", @"-", @"/", nil];
     return [twoOperandOperations containsObject:stackItem];
 }
 
@@ -142,7 +142,7 @@
 
         if ([operation isEqualToString:@"+"]) {
             result = [self popOperandOffProgramStack:stack] + [self popOperandOffProgramStack:stack];
-        } else if ([@"*" isEqualToString:operation]) {
+        } else if ([@"x" isEqualToString:operation]) {
             result = [self popOperandOffProgramStack:stack] * [self popOperandOffProgramStack:stack];
         } else if ([operation isEqualToString:@"-"]) {
             double subtrahend = [self popOperandOffProgramStack:stack];
