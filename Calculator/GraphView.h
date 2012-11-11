@@ -14,5 +14,6 @@
 @property (nonatomic) CGPoint origin;
 
 - (void)tap:(UITapGestureRecognizer *)gesture;
+- (void)pan:(UIPanGestureRecognizer *)gesture;
 
 @end

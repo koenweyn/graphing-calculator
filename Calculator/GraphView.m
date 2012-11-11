@@ -57,6 +57,16 @@
     }
 }
 
+- (void)pan:(UIPanGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        CGPoint panTranslation = [gesture translationInView:self];
+        self.origin = CGPointMake(self.origin.x + panTranslation.x, self.origin.y + panTranslation.y);
+        [gesture setTranslation:CGPointZero inView:self]; // reset translation to 0 (so future changes are incremental, not cumulative)
+    }
+}
+
 - (void)setup
 {
     self.contentMode = UIViewContentModeRedraw;
@@ -80,7 +90,8 @@
 {
     CGPoint currentOrigin = self.origin;
     if (!self.originIsSet) {
-        currentOrigin = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
+        self.origin = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
+        currentOrigin = self.origin;
     }
         
     [[AxesDrawer class] drawAxesInRect:rect originAtPoint:currentOrigin scale:self.scale];
