@@ -22,7 +22,7 @@
 @synthesize origin = _origin;
 @synthesize dataSource = _dataSource;
 
-#define DEFAULT_SCALE 0.5;
+#define DEFAULT_SCALE 1.0;
 #define DEFAULT_ORIGIN CGPointMake(0,0);
 
 - (CGFloat)scale
