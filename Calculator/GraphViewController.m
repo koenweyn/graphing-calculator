@@ -12,17 +12,20 @@
 
 @interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
+@property (weak, nonatomic) IBOutlet UILabel *programDisplay;
 @end
 
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
+@synthesize programDisplay = _programDisplay;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    //we cannot do this in the setter for program, because programDisplay is nil when setProgram is called
+    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
 }
 
 - (void)setGraphView:(GraphView *)graphView
@@ -57,4 +60,8 @@
 }
 
 
+- (void)viewDidUnload {
+    [self setProgramDisplay:nil];
+    [super viewDidUnload];
+}
 @end
