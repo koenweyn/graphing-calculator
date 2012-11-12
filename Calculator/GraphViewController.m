@@ -8,14 +8,16 @@
 
 #import "GraphViewController.h"
 #import "GraphView.h"
+#import "CalculatorBrain.h"
 
-@interface GraphViewController ()
+@interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @end
 
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
+@synthesize program = _program;
 
 - (void)viewDidLoad
 {
@@ -36,7 +38,18 @@
 
     //add a pinch recognizer calling pinch:
     [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];
+    
+    //set ourself as the datasource
+    self.graphView.dataSource = self;
 
 }
+
+- (double)yValueForGraphView:(GraphView *)sender forX:(double)x
+{
+    if (!self.program) return 0;
+    
+    return [CalculatorBrain runProgram:self.program withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:x], @"x", nil]];
+}
+
 
 @end

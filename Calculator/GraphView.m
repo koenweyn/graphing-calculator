@@ -20,8 +20,9 @@
 
 @synthesize scale = _scale;
 @synthesize origin = _origin;
+@synthesize dataSource = _dataSource;
 
-#define DEFAULT_SCALE 1.0;
+#define DEFAULT_SCALE 0.5;
 #define DEFAULT_ORIGIN CGPointMake(0,0);
 
 - (CGFloat)scale
@@ -36,6 +37,7 @@
 - (void)setScale:(CGFloat)scale
 {
     if (scale != _scale) {
+        NSLog(@"update scale: %g", scale);
         _scale = scale;
         [self setNeedsDisplay];
     }
@@ -96,6 +98,43 @@
     return self;
 }
 
+- (void)drawGraph:(CGRect)rect
+{
+    if (!self.scale)
+        return; //prevent divide by zero
+    
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+	UIGraphicsPushContext(context);
+    
+    [[UIColor blueColor] setStroke];
+
+	CGContextBeginPath(context);
+    
+    BOOL drew = NO;
+    
+    //without scale
+    for (CGFloat x = rect.origin.x; x < rect.origin.x + rect.size.width; x++) {
+        CGFloat realX = (x - self.origin.x) / self.scale;
+        CGFloat realY = [self.dataSource yValueForGraphView:self forX:realX];
+        
+        CGPoint pointOnScreen = CGPointMake(x, self.origin.y - realY * self.scale);
+        
+        if (CGRectContainsPoint(rect, pointOnScreen)) {
+            if (drew) {
+                CGContextAddLineToPoint(context, pointOnScreen.x, pointOnScreen.y);
+            }
+			CGContextMoveToPoint(context, pointOnScreen.x, pointOnScreen.y);
+            drew = YES;
+		}
+    }
+    
+    CGContextStrokePath(context);
+    
+    UIGraphicsPopContext();
+}
+
 - (void)drawRect:(CGRect)rect
 {
     CGPoint currentOrigin = self.origin;
@@ -103,9 +142,13 @@
         self.origin = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
         currentOrigin = self.origin;
     }
-        
+    
+    //draw axes
     [[AxesDrawer class] drawAxesInRect:rect originAtPoint:currentOrigin scale:self.scale];
-    // Drawing code
+
+    //draw graph
+    NSLog(@"Value for 0: %g", [self.dataSource yValueForGraphView:self forX:0]);
+    [self drawGraph:rect];
 }
 
 @end
