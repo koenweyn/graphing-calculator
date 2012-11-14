@@ -172,6 +172,12 @@
     [self updateVariablesDisplay];
 }
 
+- (IBAction)iPadGraphPressed {
+    //last object of the split view controller is the detail view (GraphViewController)
+    id detailViewController = [[self.splitViewController viewControllers] lastObject];
+    [detailViewController setProgram:self.brain.program];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     [segue.destinationViewController setProgram:self.brain.program];
@@ -180,5 +186,10 @@
 - (void)viewDidUnload {
     [self setVariablesDisplay:nil];
     [super viewDidUnload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
 }
 @end
