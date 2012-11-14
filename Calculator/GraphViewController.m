@@ -26,7 +26,9 @@
 {
     [super awakeFromNib];
     NSLog(@"%@", self.splitViewController);
-    self.splitViewController.presentsWithGesture = NO;
+    if ([self.splitViewController respondsToSelector:@selector(setPresentsWithGesture:)]) {
+        self.splitViewController.presentsWithGesture = NO;
+    }
     self.splitViewController.delegate = self;
 }
 
