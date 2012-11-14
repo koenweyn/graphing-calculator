@@ -25,6 +25,10 @@
 #define DEFAULT_SCALE 1.0;
 #define DEFAULT_ORIGIN CGPointMake(0,0);
 
+#define KEY_SCALE @"graphViewScale"
+#define KEY_ORIGIN_X @"graphViewOriginX"
+#define KEY_ORIGIN_Y @"graphViewOriginY"
+
 - (CGFloat)scale
 {
     if (!_scale) {
@@ -36,10 +40,15 @@
 
 - (void)setScale:(CGFloat)scale
 {
+    if (!scale) return; //don't accept 0
+    
     if (scale != _scale) {
-        NSLog(@"update scale: %g", scale);
         _scale = scale;
         [self setNeedsDisplay];
+        
+        [[NSUserDefaults standardUserDefaults] setFloat:_scale forKey:KEY_SCALE];
+        NSLog(@"Scale update: save user defaults");
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
@@ -49,7 +58,12 @@
         _origin = origin;
         self.originIsSet = YES;
         [self setNeedsDisplay];
-    }
+
+        [[NSUserDefaults standardUserDefaults] setFloat:_origin.x forKey:KEY_ORIGIN_X];
+        [[NSUserDefaults standardUserDefaults] setFloat:_origin.y forKey:KEY_ORIGIN_Y];
+        NSLog(@"Origin update: save user defaults");
+        [[NSUserDefaults standardUserDefaults] synchronize];
+}
 }
 
 - (void)tap:(UITapGestureRecognizer *)gesture
@@ -82,6 +96,15 @@
 - (void)setup
 {
     self.contentMode = UIViewContentModeRedraw;
+    
+    NSLog(@"Load user defaults");
+    self.scale = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_SCALE];
+    float x = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_ORIGIN_X];
+    float y = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_ORIGIN_Y];
+    if (x || y) { //0,0 means it wasn't stored yet
+        self.origin = CGPointMake(x, y);
+    }
+        
 }
 
 - (void)awakeFromNib
