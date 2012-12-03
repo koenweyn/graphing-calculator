@@ -9,14 +9,14 @@
 #import "CalculatorBrain.h"
 
 @interface CalculatorBrain()
-
 @property (nonatomic, strong) NSMutableArray *programStack;
-
 @end
 
 @implementation CalculatorBrain
 
 @synthesize programStack = _programStack;
+
+static NSDictionary *OPERATION_OPERAND_COUNT;
 
 - (NSMutableArray *)programStack
 {
@@ -26,6 +26,24 @@
     return _programStack;
 }
 
++ (NSDictionary *) operationOperandCount
+{
+    if (!OPERATION_OPERAND_COUNT) {
+        OPERATION_OPERAND_COUNT = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:2], @"+",
+                                  [NSNumber numberWithInt:2], @"*",
+                                  [NSNumber numberWithInt:2], @"-",
+                                  [NSNumber numberWithInt:2], @"/",
+                                  [NSNumber numberWithInt:1], @"sin",
+                                  [NSNumber numberWithInt:1], @"cos",
+                                  [NSNumber numberWithInt:1], @"sqrt",
+                                  [NSNumber numberWithInt:1], @"+/-",
+                                  [NSNumber numberWithInt:0], @"π",
+                                  nil];
+    }
+    return OPERATION_OPERAND_COUNT;
+}
+
 - (id)program
 {
     return [self.programStack copy];
@@ -33,19 +51,22 @@
 
 + (BOOL)isTwoOperandOperation:(id)stackItem
 {
-    NSSet *twoOperandOperations = [NSSet setWithObjects:@"+", @"*", @"-", @"/", nil];
-    return [twoOperandOperations containsObject:stackItem];
+    return [self.operationOperandCount objectForKey:stackItem] == [NSNumber numberWithInt:2];
 }
 
 + (BOOL)isOneOperandOperation:(id)stackItem
 {
-    NSSet *oneOperandOperations = [NSSet setWithObjects:@"sin", @"cos", @"sqrt", @"+/-", nil];
-    return [oneOperandOperations containsObject:stackItem];
+    return [self.operationOperandCount objectForKey:stackItem] == [NSNumber numberWithInt:1];
 }
 
 + (BOOL)isZeroOperandOperation:(id)stackItem
 {
-    return [@"π" isEqual:stackItem];
+    return [self.operationOperandCount objectForKey:stackItem] == [NSNumber numberWithInt:0];
+}
+
++ (BOOL)isOperation:(id)stackItem
+{
+    return [self.operationOperandCount objectForKey:stackItem] != nil;
 }
 
 + (BOOL)isOperand:(id)stackItem
@@ -55,8 +76,7 @@
 
 + (BOOL)isVariable:(id)stackItem
 {
-    return [stackItem isKindOfClass:[NSString class]]
-    && !([self isTwoOperandOperation:stackItem] || [self isOneOperandOperation:stackItem] || [self isZeroOperandOperation:stackItem]);
+    return [stackItem isKindOfClass:[NSString class]] && ![self isOperation:stackItem];
 }
 
 + (NSString *)removeOuterBracesIfNeeded:(NSString *)string

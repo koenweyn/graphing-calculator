@@ -18,10 +18,12 @@
 
 @property (nonatomic) CGFloat scale;
 @property (nonatomic) CGPoint origin;
+@property (nonatomic) BOOL drawDots;
 
 - (void)tap:(UITapGestureRecognizer *)gesture;
 - (void)pan:(UIPanGestureRecognizer *)gesture;
 - (void)pinch:(UIPanGestureRecognizer *)gesture;
+- (void)resetScaleAndOrigin;
 
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 

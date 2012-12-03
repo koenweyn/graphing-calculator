@@ -14,6 +14,8 @@
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @property (nonatomic, weak) IBOutlet UILabel *programDisplay;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *dotModeTitle;
+@property (nonatomic, weak) IBOutlet UISwitch *dotModeSwitch;
 @end
 
 @implementation GraphViewController
@@ -21,6 +23,8 @@
 @synthesize graphView = _graphView;
 @synthesize program = _program;
 @synthesize programDisplay = _programDisplay;
+@synthesize dotModeSwitch = _dotModeSwitch;
+@synthesize dotModeTitle = _dotModeTitle;
 
 - (void)awakeFromNib
 {
@@ -30,6 +34,7 @@
         self.splitViewController.presentsWithGesture = NO;
     }
     self.splitViewController.delegate = self;
+    
 }
 
 - (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
@@ -66,6 +71,12 @@
     [super viewDidLoad];
     //we cannot do this in the setter for program, because when running on iPhone, programDisplay is nil when setProgram is called
     [self updateProgramDisplay];
+
+    //customize font of dotModeTitle
+    [self.dotModeTitle setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont boldSystemFontOfSize:16], UITextAttributeFont,nil] forState:UIControlStateNormal];
+    
+    //synchronize state of dotModeSwitch with the actual value in graphView
+    self.dotModeSwitch.on = self.graphView.drawDots;
 }
 
 - (void)setProgram:(id)program
@@ -112,9 +123,17 @@
     return YES; // support all orientations
 }
 
+- (IBAction)changeMode:(UISwitch *)sender {
+    self.graphView.drawDots = sender.on;
+}
+
+- (IBAction)resetAxes:(id)sender {
+    [self.graphView resetScaleAndOrigin];
+}
 
 - (void)viewDidUnload {
     [self setProgramDisplay:nil];
+    [self setDotModeTitle:nil];
     [super viewDidUnload];
 }
 @end

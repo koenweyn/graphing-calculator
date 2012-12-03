@@ -190,6 +190,10 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        //when running on iPhone, the UI does not support landscape
+        return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+    }
     return YES;
 }
 @end

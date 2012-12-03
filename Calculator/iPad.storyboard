@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G56" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="o2x-6f-m6Q">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="11G63" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="o2x-6f-m6Q">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
@@ -13,7 +13,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="22W-kn-WqP" customClass="GraphView">
-                                <rect key="frame" x="0.0" y="44" width="768" height="960"/>
+                                <rect key="frame" x="0.0" y="44" width="768" height="916"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="function" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PBg-Mw-Dsu">
@@ -36,11 +36,37 @@
                                 </items>
                                 <color key="tintColor" red="0.45490199329999997" green="0.023529414089999999" blue="0.019607843829999999" alpha="1" colorSpace="deviceRGB"/>
                             </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackOpaque" id="a8P-f5-i8e">
+                                <rect key="frame" x="0.0" y="960" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Reset Axes" id="eca-9x-cVf">
+                                        <color key="tintColor" red="0.45490199329999997" green="0.023529414089999999" blue="0.019607843829999999" alpha="1" colorSpace="deviceRGB"/>
+                                        <connections>
+                                            <action selector="resetAxes:" destination="LQo-ff-liZ" id="Boz-t2-msN"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="iBB-me-NUf"/>
+                                    <barButtonItem title="Dots" style="plain" id="AIY-cs-I9l"/>
+                                    <barButtonItem title="Dot Mode" style="plain" id="8HY-QQ-979">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="XC6-eI-3K5">
+                                            <rect key="frame" x="677" y="9" width="79" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                            <color key="onTintColor" red="0.45490199329999997" green="0.023529414089999999" blue="0.019607843829999999" alpha="1" colorSpace="deviceRGB"/>
+                                            <connections>
+                                                <action selector="changeMode:" destination="LQo-ff-liZ" eventType="valueChanged" id="JPa-W2-6Pn"/>
+                                            </connections>
+                                        </switch>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="dotModeSwitch" destination="XC6-eI-3K5" id="2Y7-e2-MxY"/>
+                        <outlet property="dotModeTitle" destination="AIY-cs-I9l" id="Ovb-V6-DeU"/>
                         <outlet property="graphView" destination="22W-kn-WqP" id="5NS-2i-D8Z"/>
                         <outlet property="programDisplay" destination="PBg-Mw-Dsu" id="U7y-db-O0m"/>
                         <outlet property="toolbar" destination="g0G-cW-hbi" id="N0B-W7-yHZ"/>
@@ -551,6 +577,10 @@
         <class className="GraphViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
+                <relationship kind="action" name="changeMode:" candidateClass="UISwitch"/>
+                <relationship kind="action" name="resetAxes:"/>
+                <relationship kind="outlet" name="dotModeSwitch" candidateClass="UISwitch"/>
+                <relationship kind="outlet" name="dotModeTitle" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
                 <relationship kind="outlet" name="programDisplay" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>

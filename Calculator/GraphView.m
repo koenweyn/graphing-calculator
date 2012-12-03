@@ -21,13 +21,15 @@
 @synthesize scale = _scale;
 @synthesize origin = _origin;
 @synthesize dataSource = _dataSource;
+@synthesize drawDots = _drawDots;
 
 #define DEFAULT_SCALE 1.0;
-#define DEFAULT_ORIGIN CGPointMake(0,0);
+#define DEFAULT_ORIGIN CGPointZero
 
 #define KEY_SCALE @"graphViewScale"
 #define KEY_ORIGIN_X @"graphViewOriginX"
 #define KEY_ORIGIN_Y @"graphViewOriginY"
+#define KEY_DRAWDOTS @"drawDots"
 
 - (CGFloat)scale
 {
@@ -54,16 +56,32 @@
 
 - (void) setOrigin:(CGPoint)origin
 {
-    if (!self.originIsSet || !CGPointEqualToPoint(origin, _origin)) {
+    if (!CGPointEqualToPoint(origin, _origin)) {
         _origin = origin;
-        self.originIsSet = YES;
         [self setNeedsDisplay];
 
         [[NSUserDefaults standardUserDefaults] setFloat:_origin.x forKey:KEY_ORIGIN_X];
         [[NSUserDefaults standardUserDefaults] setFloat:_origin.y forKey:KEY_ORIGIN_Y];
         NSLog(@"Origin update: save user defaults");
         [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
+
+- (void) setDrawDots:(BOOL)drawDots
+{
+    if (_drawDots != drawDots) {
+        _drawDots = drawDots;
+        [self setNeedsDisplay];
+        [[NSUserDefaults standardUserDefaults] setBool:_drawDots forKey:KEY_DRAWDOTS];
+        NSLog(@"drawDots update: save user defaults");
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
+
+- (void) resetScaleAndOrigin
+{
+    self.scale = DEFAULT_SCALE;
+    self.origin = DEFAULT_ORIGIN;
 }
 
 - (void)tap:(UITapGestureRecognizer *)gesture
@@ -99,6 +117,7 @@
     
     NSLog(@"Load user defaults");
     self.scale = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_SCALE];
+    self.drawDots = [[NSUserDefaults standardUserDefaults] boolForKey:KEY_DRAWDOTS];
     float x = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_ORIGIN_X];
     float y = [[NSUserDefaults standardUserDefaults] floatForKey:KEY_ORIGIN_Y];
     if (x || y) { //0,0 means it wasn't stored yet
@@ -132,6 +151,7 @@
 	UIGraphicsPushContext(context);
     
     [[UIColor blueColor] setStroke];
+    [[UIColor blueColor] setFill];
 
 	CGContextBeginPath(context);
     
@@ -145,15 +165,21 @@
         CGPoint pointOnScreen = CGPointMake(x, self.origin.y - realY * self.scale);
         
         if (CGRectContainsPoint(rect, pointOnScreen)) {
-            if (drew) {
-                CGContextAddLineToPoint(context, pointOnScreen.x, pointOnScreen.y);
+            if (self.drawDots) {
+                CGContextFillEllipseInRect(context, CGRectMake(pointOnScreen.x - 1, pointOnScreen.y - 1, 1, 1));
+            } else { //draw lines
+                if (drew) {
+                    CGContextAddLineToPoint(context, pointOnScreen.x, pointOnScreen.y);
+                }
+                CGContextMoveToPoint(context, pointOnScreen.x, pointOnScreen.y);
+                drew = YES;
             }
-			CGContextMoveToPoint(context, pointOnScreen.x, pointOnScreen.y);
-            drew = YES;
 		}
     }
     
-    CGContextStrokePath(context);
+    if (!self.drawDots) {
+        CGContextStrokePath(context);
+    }
     
     UIGraphicsPopContext();
 }
@@ -161,7 +187,7 @@
 - (void)drawRect:(CGRect)rect
 {
     CGPoint currentOrigin = self.origin;
-    if (!self.originIsSet) {
+    if (CGPointEqualToPoint(currentOrigin, DEFAULT_ORIGIN)) {
         self.origin = CGPointMake(rect.origin.x + rect.size.width / 2, rect.origin.y + rect.size.height / 2);
         currentOrigin = self.origin;
     }

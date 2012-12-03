@@ -21,12 +21,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Calculator/GraphView.m"
-         timestampString = "374581567.01638"
+         timestampString = "376265712.137957"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "46"
-         endingLineNumber = "46"
-         landmarkName = "-setScale:"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
+         landmarkName = "-drawGraph:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -34,12 +34,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Calculator/GraphView.m"
-         timestampString = "374581567.01638"
+         timestampString = "376265712.137957"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "141"
-         endingLineNumber = "141"
-         landmarkName = "-drawGraph:"
+         startingLineNumber = "120"
+         endingLineNumber = "120"
+         landmarkName = "-setup"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
