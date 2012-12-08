@@ -43,6 +43,7 @@
 		5A6221DA1637D13F00BD8143 /* CalculatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A6221D91637D13F00BD8143 /* CalculatorTests.m */; };
 		5AA164531654368400DE099D /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AA164511654368400DE099D /* background.png */; };
 		5AA164541654368400DE099D /* background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AA164521654368400DE099D /* background@2x.png */; };
+		5AF111C31673552B00581B87 /* CalculatorProgramsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5AF111C21673552B00581B87 /* CalculatorProgramsTableViewController.m */; };
 		5AF5D7F3164C42D0001FDAD0 /* grey_button_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5D7EF164C42D0001FDAD0 /* grey_button_2.png */; };
 		5AF5D7F4164C42D0001FDAD0 /* grey_button_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5D7F0164C42D0001FDAD0 /* grey_button_2@2x.png */; };
 		5AF5D7F5164C42D0001FDAD0 /* red_button_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5D7F1164C42D0001FDAD0 /* red_button_2.png */; };
@@ -98,6 +99,8 @@
 		5A6221DB1637D13F00BD8143 /* CalculatorTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CalculatorTests-Prefix.pch"; sourceTree = "<group>"; };
 		5AA164511654368400DE099D /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background.png; sourceTree = "<group>"; };
 		5AA164521654368400DE099D /* background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background@2x.png"; sourceTree = "<group>"; };
+		5AF111C11673552B00581B87 /* CalculatorProgramsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalculatorProgramsTableViewController.h; sourceTree = "<group>"; };
+		5AF111C21673552B00581B87 /* CalculatorProgramsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalculatorProgramsTableViewController.m; sourceTree = "<group>"; };
 		5AF5D7EF164C42D0001FDAD0 /* grey_button_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grey_button_2.png; sourceTree = "<group>"; };
 		5AF5D7F0164C42D0001FDAD0 /* grey_button_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grey_button_2@2x.png"; sourceTree = "<group>"; };
 		5AF5D7F1164C42D0001FDAD0 /* red_button_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_button_2.png; sourceTree = "<group>"; };
@@ -171,6 +174,8 @@
 		5A1C2FB8161B947000AB74B8 /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				5AF111C11673552B00581B87 /* CalculatorProgramsTableViewController.h */,
+				5AF111C21673552B00581B87 /* CalculatorProgramsTableViewController.m */,
 				5AF5D802164C5CAE001FDAD0 /* AxesDrawer.h */,
 				5AF5D803164C5CAE001FDAD0 /* AxesDrawer.m */,
 				5A1C2FC1161B947000AB74B8 /* CalculatorAppDelegate.h */,
@@ -395,6 +400,7 @@
 				5AF5D7FA164C542D001FDAD0 /* GraphViewController.m in Sources */,
 				5AF5D801164C568A001FDAD0 /* GraphView.m in Sources */,
 				5AF5D804164C5CAE001FDAD0 /* AxesDrawer.m in Sources */,
+				5AF111C31673552B00581B87 /* CalculatorProgramsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

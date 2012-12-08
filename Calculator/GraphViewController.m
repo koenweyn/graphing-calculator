@@ -9,8 +9,9 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 #import "CalculatorBrain.h"
+#import "CalculatorProgramsTableViewController.h"
 
-@interface GraphViewController () <GraphViewDataSource>
+@interface GraphViewController () <GraphViewDataSource, CalculatorProgramsTableViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @property (nonatomic, weak) IBOutlet UILabel *programDisplay;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
@@ -19,6 +20,8 @@
 @end
 
 @implementation GraphViewController
+
+#define KEY_FAVORITES @"GraphViewController.Favorites"
 
 @synthesize graphView = _graphView;
 @synthesize program = _program;
@@ -130,6 +133,33 @@
 - (IBAction)resetAxes:(id)sender {
     [self.graphView resetScaleAndOrigin];
 }
+
+- (IBAction)addToFavorites:(id)sender {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favorites = [[defaults objectForKey:KEY_FAVORITES] mutableCopy];
+    if (!favorites) favorites = [NSMutableArray array];
+    [favorites addObject:self.program];
+    [defaults setObject:favorites forKey:KEY_FAVORITES];
+    [defaults synchronize];
+}
+
+- (void)calculatorProgramsTableViewController:(CalculatorProgramsTableViewController *)sender
+                                 choseProgram:(id)program
+{
+    self.program = program;
+}
+
+//TODO KW programmatically execute segue, so that we can have toggle behaviour (http://stackoverflow.com/questions/8598557/uibarbuttonitem-popover-segue-creates-multiple-popovers)
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Show Favorite Graphs"]){
+        NSArray *programs = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_FAVORITES];
+        [segue.destinationViewController setPrograms:programs];
+        [segue.destinationViewController setDelegate:self];
+    }
+         
+}
+
 
 - (void)viewDidUnload {
     [self setProgramDisplay:nil];
