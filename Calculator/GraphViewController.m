@@ -13,7 +13,7 @@
 
 @interface GraphViewController () <GraphViewDataSource, CalculatorProgramsTableViewControllerDelegate>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
-@property (nonatomic, weak) IBOutlet UILabel *programDisplay;
+@property (nonatomic, weak) IBOutlet id programDisplay;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *dotModeTitle;
 @property (nonatomic, weak) IBOutlet UISwitch *dotModeSwitch;
@@ -23,11 +23,12 @@
 
 #define KEY_FAVORITES @"GraphViewController.Favorites"
 
-@synthesize graphView = _graphView;
 @synthesize program = _program;
+@synthesize graphView = _graphView;
 @synthesize programDisplay = _programDisplay;
-@synthesize dotModeSwitch = _dotModeSwitch;
+@synthesize toolbar = _toolbar;
 @synthesize dotModeTitle = _dotModeTitle;
+@synthesize dotModeSwitch = _dotModeSwitch;
 
 - (void)awakeFromNib
 {
@@ -66,7 +67,12 @@
 
 - (void)updateProgramDisplay
 {
-    self.programDisplay.text = [CalculatorBrain descriptionOfProgram:self.program];
+    NSString *description = [CalculatorBrain descriptionOfProgram:self.program];
+    if ([self.programDisplay respondsToSelector:@selector(setTitle:)]) {
+        [self.programDisplay setTitle:description];
+    } else if ([self.programDisplay respondsToSelector:@selector(setText:)]) {
+        [self.programDisplay setText:description];
+    }
 }
 
 - (void)viewDidLoad
