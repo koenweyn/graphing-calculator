@@ -17,6 +17,7 @@
 @property (nonatomic, weak) IBOutlet UIToolbar *toolbar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *dotModeTitle;
 @property (nonatomic, weak) IBOutlet UISwitch *dotModeSwitch;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 @end
 
 @implementation GraphViewController
@@ -29,6 +30,7 @@
 @synthesize toolbar = _toolbar;
 @synthesize dotModeTitle = _dotModeTitle;
 @synthesize dotModeSwitch = _dotModeSwitch;
+@synthesize popoverController;
 
 - (void)awakeFromNib
 {
@@ -153,12 +155,36 @@
                                  choseProgram:(id)program
 {
     self.program = program;
+    [self.navigationController popViewControllerAnimated:YES];
 }
+
+- (void)calculatorProgramsTableViewController:(CalculatorProgramsTableViewController *)sender deletedProgram:(id)program
+{
+    NSString *deletedProgramDescription = [CalculatorBrain descriptionOfProgram:program];
+    NSMutableArray *favorites = [NSMutableArray array];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    //create a new array that excludes the program that was deleted
+    for (id favoriteProgram in [defaults objectForKey:KEY_FAVORITES]) {
+        if (![[CalculatorBrain descriptionOfProgram:favoriteProgram] isEqualToString:deletedProgramDescription]) {
+            [favorites addObject:favoriteProgram];
+        }
+    }
+    [defaults setObject:favorites forKey:KEY_FAVORITES];
+    [defaults synchronize];
+    sender.programs = favorites;
+}
+
 
 //TODO KW programmatically execute segue, so that we can have toggle behaviour (http://stackoverflow.com/questions/8598557/uibarbuttonitem-popover-segue-creates-multiple-popovers)
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"Show Favorite Graphs"]){
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]]){
+            UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+            [self.popoverController dismissPopoverAnimated:YES];
+            self.popoverController = popoverSegue.popoverController;
+        }
         NSArray *programs = [[NSUserDefaults standardUserDefaults] objectForKey:KEY_FAVORITES];
         [segue.destinationViewController setPrograms:programs];
         [segue.destinationViewController setDelegate:self];

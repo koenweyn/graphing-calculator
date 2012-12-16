@@ -81,7 +81,6 @@
                         <outlet property="dotModeSwitch" destination="XC6-eI-3K5" id="2Y7-e2-MxY"/>
                         <outlet property="dotModeTitle" destination="AIY-cs-I9l" id="Ovb-V6-DeU"/>
                         <outlet property="graphView" destination="22W-kn-WqP" id="5NS-2i-D8Z"/>
-                        <outlet property="programDisplay" destination="fCx-eE-Aps" id="aCx-Y9-bYv"/>
                         <outlet property="toolbar" destination="g0G-cW-hbi" id="N0B-W7-yHZ"/>
                     </connections>
                 </viewController>
@@ -637,7 +636,6 @@
                 <relationship kind="action" name="resetAxes:"/>
                 <relationship kind="outlet" name="dotModeSwitch" candidateClass="UISwitch"/>
                 <relationship kind="outlet" name="dotModeTitle" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="graphTitle" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
                 <relationship kind="outlet" name="programDisplay"/>
                 <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>

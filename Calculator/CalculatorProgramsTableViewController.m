@@ -14,6 +14,12 @@
 @synthesize programs = _programs;
 @synthesize delegate = _delegate;
 
+- (void)setPrograms:(NSArray *)programs
+{
+    _programs = programs;
+    [self.tableView reloadData];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
@@ -49,6 +55,22 @@
     id program = [self.programs objectAtIndex:indexPath.row];
     [self.delegate calculatorProgramsTableViewController:self choseProgram:program];
 }
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // if our delegate supports delete, then say YES, please edit
+    return [self.delegate respondsToSelector:@selector(calculatorProgramsTableViewController:deletedProgram:)];
+}
+
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        id program = [self.programs objectAtIndex:indexPath.row];
+        [self.delegate calculatorProgramsTableViewController:self deletedProgram:program];
+    }
+}
+
 
 @end
 
